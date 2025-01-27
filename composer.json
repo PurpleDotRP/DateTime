@@ -1,0 +1,29 @@
+{
+  "name": "purpledot/datetime",
+  "version": "1.0.0",
+  "description": "A custom DateTime class with business days support",
+  "keywords": ["datetime", "business day", "datetime patch"],
+  "type": "library",
+  "license": "MIT",
+  "authors": [{
+    "name": "PurpleDot Robert Pajer",
+    "email": "kontakt@purpledot.pl"
+  }],
+  "autoload": {
+    "psr-4": {
+      "PurpleDot\\": "src/"
+    },
+    "files": [
+      "src/DateTime.php"
+    ]
+  },
+  "require": {
+    "php": ">=7.1",
+    "michalmanko/php-library-holiday": "^1.1.0"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  }
+}
