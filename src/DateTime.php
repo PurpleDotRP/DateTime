@@ -27,6 +27,7 @@ class DateTime extends \DateTime
         }
     }
 
+    #[\ReturnTypeWillChange]
     public function modify($modifier)
     {
         if (preg_match(self::PATTERN, $modifier, $matches)) {
