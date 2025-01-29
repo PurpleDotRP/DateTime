@@ -11,13 +11,11 @@ class DateTime extends \DateTime
     public function __construct($datetime = "now", $datetimezone = null)
     {
         if (preg_match(self::PATTERN, $datetime, $matches)) {
-            $businessDays = (int)$matches[1];
-            $direction = $businessDays > 0 ? 1 : -1;
-            $businessDays = abs($businessDays);
-
+            $businessDaysModifier = $this->getBusinessDaysModifier($matches[1]);
             $remainingTime = preg_replace(self::PATTERN, '', $datetime);
             parent::__construct("now", $datetimezone);
-            $this->businessDayProcessor($businessDays, $direction);
+
+            $this->businessDayProcessor($businessDaysModifier['days'], $businessDaysModifier['direction']);
 
             if (!empty(trim($remainingTime))) {
                 $this->modify(trim($remainingTime));
@@ -27,18 +25,14 @@ class DateTime extends \DateTime
         }
     }
 
-    #[\ReturnTypeWillChange]
     public function modify($modifier)
     {
         if (preg_match(self::PATTERN, $modifier, $matches)) {
-            $businessDays = (int)$matches[1];
-            $direction = $businessDays > 0 ? 1 : -1;
-            $businessDays = abs($businessDays);
-
+            $businessDaysModifier = $this->getBusinessDaysModifier($matches[1]);
             $remainingModifier = preg_replace(self::PATTERN, '', $modifier);
             parent::modify("now");
 
-            $this->businessDayProcessor($businessDays, $direction, false);
+            $this->businessDayProcessor($businessDaysModifier['businessDays'], $businessDaysModifier['direction'], false);
 
             if (!empty(trim($remainingModifier))) {
                 parent::modify(trim($remainingModifier));
@@ -50,7 +44,7 @@ class DateTime extends \DateTime
         return parent::modify($modifier);
     }
 
-    protected function businessDayProcessor(int $businessDays, int $direction, ?bool $constructor = true)
+    private function businessDayProcessor(int $businessDays, int $direction, ?bool $constructor = true)
     {
         $provider = HolidayFactory::createProvider('PL');
 
@@ -66,5 +60,16 @@ class DateTime extends \DateTime
                 $businessDays--;
             }
         }
+    }
+
+    private function getBusinessDaysModifier(string $businessDaysString)
+    {
+        $businessDays = (int)preg_replace('/\s/', '', $businessDaysString);
+        $direction = $businessDays > 0 ? 1 : -1;
+
+        return [
+            'days' => abs($businessDays),
+            'direction' => $direction,
+        ];
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "purpledot/datetime",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A custom DateTime class with business days support",
   "keywords": ["datetime", "business day", "datetime patch"],
   "type": "library",
