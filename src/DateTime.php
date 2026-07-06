@@ -33,7 +33,7 @@ class DateTime extends \DateTime
             $remainingModifier = preg_replace(self::PATTERN, '', $modifier);
             parent::modify("now");
 
-            $this->businessDayProcessor($businessDaysModifier['businessDays'], $businessDaysModifier['direction'], false);
+            $this->businessDayProcessor($businessDaysModifier['days'], $businessDaysModifier['direction'], false);
 
             if (!empty(trim($remainingModifier))) {
                 parent::modify(trim($remainingModifier));
